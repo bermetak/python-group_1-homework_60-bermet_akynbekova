@@ -1,0 +1,8 @@
+.CountryListItem {
+    cursor: pointer;
+}
+.CountryListItem:hover {
+    color: #ffe;
+    background-color: #5488af;
+    border: 1px solid black;
+   }
