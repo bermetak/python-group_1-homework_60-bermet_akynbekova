@@ -1,0 +1,9 @@
+.CountryApp {
+
+    height: 500px;
+
+}
+.CountryList {
+    overflow: auto;
+    height: auto;
+}
