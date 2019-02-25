@@ -2,3 +2,11 @@
 
     height: 100%;
 }
+.Flag {
+    width: 50px;
+    height: auto;
+}
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
