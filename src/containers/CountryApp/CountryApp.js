@@ -43,9 +43,7 @@ class CountryApp extends Component {
                                 />
                             ))}
                         </div>
-
-
-                        <div className='col-8 border border-dark p-4'>
+                        <div className='CountryDetail col-8 border border-dark p-4'>
                             <Country countryCode={this.state.selectedCountryCode}/>
                         </div>
                     </div>

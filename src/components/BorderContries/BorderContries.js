@@ -6,13 +6,11 @@ import './BorderContries.css';
 class BorderContries extends Component {
 
     render() {
-
         return (
-            <h5>
+            <li>
                 {this.props.name}
-            </h5>
+            </li>
         )
-            ;
     }
 }
 
