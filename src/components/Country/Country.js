@@ -7,6 +7,7 @@ import Numeral from 'numeral';
 
 class Country extends Component {
     state = {
+
         loadedCountry: null,
         borderCountries: []
     };
@@ -16,11 +17,16 @@ class Country extends Component {
         const countryCode = this.props.countryCode;
         if (countryCode) {
             if (!loadedCountry || countryCode !== loadedCountry.alpha3Code) {
+
                 axios.get('alpha/' + countryCode).then(response => {
-                    let borderCountries = this.getBorderCountries(response.data)
-                    this.setState({
-                        loadedCountry: response.data,
-                        borderCountries: borderCountries
+                    const requests = response.data.borders.map(countryBorder => {
+                        return axios.get('alpha/' + countryBorder).then(countries => {
+                            return countries.data;
+                        })
+                    });
+                    return Promise.all(requests).then(data => {
+                        this.setState({loadedCountry: response.data, borderCountries: data});
+                        console.log(this.state)
                     })
                 }).catch(error => {
                     console.log(error);
@@ -29,18 +35,9 @@ class Country extends Component {
         }
     }
 
-    getBorderCountries = (data) => {
-        let borderCountry = [];
-        data.borders.map(code => {
-            axios.get('alpha/' + code).then(response => {
-                borderCountry.push(response.data.name)
-            })
-        });
-        return borderCountry
-    };
 
     numToString = () => {
-        let num = Numeral(this.state.loadedCountry.population).format('0.00a')
+        let num = Numeral(this.state.loadedCountry.population).format('0.00a');
         return num
     };
 
@@ -50,6 +47,7 @@ class Country extends Component {
             this.state.loadedCountry ?
                 <div className="Country row">
                     <div className='col'>
+                        {console.log(this.state)}
                         <h1>{this.state.loadedCountry.name}</h1>
                         <br/>
                         <p>Capital: {this.state.loadedCountry.capital}</p>
@@ -58,7 +56,7 @@ class Country extends Component {
                         {this.state.borderCountries.map(country => (
                             <ul>
                                 <BorderContries
-                                    name={country}
+                                    name={country.name}
                                 />
                             </ul>
                         ))}
@@ -66,8 +64,6 @@ class Country extends Component {
                     <div className='Flag col'>
                         <img src={this.state.loadedCountry.flag} alt=""/>
                     </div>
-                    {console.log(this.state.loadedCountry)}
-                    {console.log(this.state.borderCountries)}
                 </div>
                 : <p>Выберите страну</p>
         );
