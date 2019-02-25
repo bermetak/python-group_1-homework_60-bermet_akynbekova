@@ -39,7 +39,6 @@ class CountryApp extends Component {
                             {this.state.countries.map(country => (
                                 <CountryList
                                     name={country.name}
-                                    N={country.alpha3Code}
                                     clicked={() => this.countryClicked(country.alpha3Code)}
                                 />
                             ))}
